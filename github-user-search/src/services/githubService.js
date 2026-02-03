@@ -15,9 +15,9 @@ export const searchUsers = async ({ username, location, minRepos }) => {
   if (location) query += `location:${location} `;
   if (minRepos) query += `repos:>=${minRepos} `;
 
-  const response = await axios.get(
-    `https://api.github.com/search/users?q=${encodeURIComponent(query)}`
-  );
+const response = await axios.get( 
+    `https://api.github.com/search/users?q=${encodeURIComponent(query)}&page=${page}&per_page=10` 
+);
 
   return response.data.items; // returns an array of matching users
 };

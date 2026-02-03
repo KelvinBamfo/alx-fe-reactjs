@@ -5,18 +5,20 @@ const Search = () => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [minRepos, setMinRepos] = useState("");
-  const [users, setUsers] = useState([]);          // now an array of users
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setUsers([]);
+    setPage(1);
 
     try {
-      const results = await searchUsers({ username, location, minRepos });
+      const results = await searchUsers({ username, location, minRepos, page: 1 });
       if (results.length === 0) {
         setError("Looks like we cant find the user");
       } else {
@@ -26,6 +28,17 @@ const Search = () => {
       setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMore = async () => {
+    const nextPage = page + 1;
+    try {
+      const moreResults = await searchUsers({ username, location, minRepos, page: nextPage });
+      setUsers([...users, ...moreResults]);
+      setPage(nextPage);
+    } catch (err) {
+      setError("Looks like we cant find the user");
     }
   };
 
@@ -80,6 +93,12 @@ const Search = () => {
                 <h3 className="text-lg font-semibold text-center mt-2">
                   {u.login}
                 </h3>
+                <p className="text-center text-gray-600">
+                  Location: {u.location || "Not specified"}
+                </p>
+                <p className="text-center text-gray-600">
+                  Public Repos: {u.public_repos ?? "N/A"}
+                </p>
                 <a
                   href={u.html_url}
                   target="_blank"
@@ -90,6 +109,18 @@ const Search = () => {
                 </a>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination / Load More */}
+        {users.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={loadMore}
+              className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 transition"
+            >
+              Load More
+            </button>
           </div>
         )}
       </div>
