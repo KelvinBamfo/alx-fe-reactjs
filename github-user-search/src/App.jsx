@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Search from "./components/Search";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,16 +14,20 @@ function App() {
     }
   };
 
-  
   return (
     <div>
       <h1>GitHub User Search</h1>
-      <button onClick={fetchUser}>Fetch Octocat</button>
+      <Search />
+      <button onClick={fetchUser}>Fetch</button>
+
+      {/* Conditional rendering for user */}
       {user && (
         <div>
           <p>{user.login}</p>
           <img src={user.avatar_url} alt={user.login} width={100} />
-          <a href={user.html_url} target="_blank">View Profile</a>
+          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+            View Profile
+          </a>
         </div>
       )}
     </div>
@@ -30,3 +35,4 @@ function App() {
 }
 
 export default App;
+
