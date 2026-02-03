@@ -18,8 +18,6 @@ function App() {
     <div>
       <h1>GitHub User Search</h1>
       <Search />
-      <button onClick={fetchUser}>Fetch</button>
-
       {/* Conditional rendering for user */}
       {user && (
         <div>

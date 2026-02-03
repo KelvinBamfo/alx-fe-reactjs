@@ -8,7 +8,7 @@ const Search = () => {
   const [error, setError] = useState("");         // error state
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     setLoading(true);
     setError("");
     setUser(null);
@@ -31,23 +31,25 @@ const Search = () => {
           type="text"
           placeholder="Enter GitHub username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)} // capture input
+          onChange={(e) => setUsername(e.target.value)}
         />
         <button type="submit">Search</button>
       </form>
 
-      {/* Conditional Rendering */}
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {user && (
-        <div>
-          <img src={user.avatar_url} alt={user.login} width="100" />
-          <h3>{user.name || user.login}</h3>
-          <a href={user.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
-          </a>
-        </div>
-      )}
+      {/* Results Field */}
+      <div className="results">
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {user && (
+          <div>
+            <img src={user.avatar_url} alt={user.login} width="100" />
+            <h3>{user.name || user.login}</h3>
+            <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+              View Profile
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
