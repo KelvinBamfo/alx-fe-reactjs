@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import '../dist/output.css';
+import './index.css';
 import Search from "./components/Search";
 
 function App() {
