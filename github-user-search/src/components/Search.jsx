@@ -35,6 +35,12 @@ const Search = () => {
   } finally {
     setLoading(false);
   }
+
+  if (!username && !location && !minRepos) {
+  setError("Please enter at least one search criteria");
+  setLoading(false);
+  return;
+}
 };
 
   const loadMore = async () => {
