@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { searchUsers } from "../services/githubService";
+import { fetchUserData, searchUsers } from "../services/githubService";
 
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -17,19 +17,25 @@ const Search = () => {
     setUsers([]);
     setPage(1);
 
-    try {
+  try {
+    if (username && !location && !minRepos) {
+      const user = await fetchUserData(username);
+      setUsers([user]); // wrap single user in array
+    } else {
+      // Otherwise → advanced search
       const results = await searchUsers({ username, location, minRepos, page: 1 });
       if (results.length === 0) {
         setError("Looks like we cant find the user");
       } else {
         setUsers(results);
       }
-    } catch (err) {
-      setError("Looks like we cant find the user");
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err) {
+    setError("Looks like we cant find the user");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const loadMore = async () => {
     const nextPage = page + 1;
