@@ -15,10 +15,8 @@ describe("TodoList Component", () => {
     render(<TodoList />);
     const input = screen.getByLabelText("new-todo-input");
     const addButton = screen.getByText("Add");
-
     fireEvent.change(input, { target: { value: "New test todo" } });
     fireEvent.click(addButton);
-
     expect(screen.getByText("New test todo")).toBeInTheDocument();
   });
 
@@ -27,15 +25,9 @@ describe("TodoList Component", () => {
     const todoText = screen.getByText("Buy groceries");
     const li = todoText.closest("li");
     expect(li).toBeInTheDocument();
-
-    // Initially not completed => no line-through on the li
     expect(li).toHaveStyle("text-decoration: none");
-
-    // Click the list item to toggle
     fireEvent.click(li);
     expect(li).toHaveStyle("text-decoration: line-through");
-
-    // Click again to toggle back
     fireEvent.click(li);
     expect(li).toHaveStyle("text-decoration: none");
   });
@@ -45,11 +37,9 @@ describe("TodoList Component", () => {
     const todo = screen.getByText("Read a chapter");
     const li = todo.closest("li");
     expect(li).toBeInTheDocument();
-
     const idAttr = li.getAttribute("data-testid"); // e.g., todo-item-3
     const id = idAttr ? idAttr.replace("todo-item-", "") : null;
     const deleteButton = screen.getByLabelText(`delete-${id}`);
-
     fireEvent.click(deleteButton);
     expect(screen.queryByText("Read a chapter")).not.toBeInTheDocument();
   });
