@@ -10,9 +10,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Home route */}
         <Route path="/" element={<Home />} />
 
-        {/* Protected Profile Route */}
+        {/* Protected Profile route with nested subroutes */}
         <Route
           path="/profile/*"
           element={
@@ -22,9 +23,10 @@ function App() {
           }
         />
 
-        {/* Dynamic Blog Route */}
-        <Route path="/blog/:postId" element={<BlogPost />} />
+        {/* Dynamic Blog route */}
+        <Route path="/blog/:id" element={<BlogPost />} />
 
+        {/* Login route */}
         <Route path="/login" element={<Login />} />
 
         {/* Redirect unknown routes */}
