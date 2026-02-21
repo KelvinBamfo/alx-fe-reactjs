@@ -6,7 +6,6 @@ import TodoList from "../components/TodoList";
 describe("TodoList Component", () => {
   test("renders initial demo todos", () => {
     render(<TodoList />);
-    // initialTodos contains "Buy groceries", "Walk the dog", "Read a chapter"
     expect(screen.getByText("Buy groceries")).toBeInTheDocument();
     expect(screen.getByText("Walk the dog")).toBeInTheDocument();
     expect(screen.getByText("Read a chapter")).toBeInTheDocument();
@@ -25,7 +24,6 @@ describe("TodoList Component", () => {
 
   test("toggles a todo between completed and not completed", () => {
     render(<TodoList />);
-    // Find the todo item "Buy groceries"
     const todoText = screen.getByText("Buy groceries");
     const li = todoText.closest("li");
     expect(li).toBeInTheDocument();
@@ -35,8 +33,6 @@ describe("TodoList Component", () => {
 
     // Click the list item to toggle
     fireEvent.click(li);
-
-    // Now should be line-through on the li
     expect(li).toHaveStyle("text-decoration: line-through");
 
     // Click again to toggle back
@@ -46,9 +42,15 @@ describe("TodoList Component", () => {
 
   test("deletes a todo item", () => {
     render(<TodoList />);
-    // Find the "Read a chapter" item
     const todo = screen.getByText("Read a chapter");
     const li = todo.closest("li");
     expect(li).toBeInTheDocument();
 
-    const idAttr = li.getAttribute("data-testid");
+    const idAttr = li.getAttribute("data-testid"); // e.g., todo-item-3
+    const id = idAttr ? idAttr.replace("todo-item-", "") : null;
+    const deleteButton = screen.getByLabelText(`delete-${id}`);
+
+    fireEvent.click(deleteButton);
+    expect(screen.queryByText("Read a chapter")).not.toBeInTheDocument();
+  });
+});
